@@ -19,7 +19,7 @@ def get_employees():
     connection.close()
     return employees
 
-def add_employee(Employee_ID,Employee_Name, Employee_DateOfJoining,Employee_Location,Employee_Project):
+def add_employee(Employee_Name, Employee_DateOfJoining,Employee_Location,Employee_Project):
     connection = get_database_connection()
     cursor = connection.cursor()
     cursor.execute('INSERT INTO Employees (Employee_Name, Employee_DateOfJoining,Employee_Location,Employee_Project) VALUES (%s, %s,%s,%s)', (Employee_Name, Employee_DateOfJoining,Employee_Location,Employee_Project))
