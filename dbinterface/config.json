@@ -1,0 +1,8 @@
+{
+    "DATABASE_CONFIG": {
+        "user": "root",
+        "password": "Sri@sindhu12",
+        "host": "localhost",
+        "database": "employees_info"
+    }
+}
