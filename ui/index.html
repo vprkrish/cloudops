@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Details</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+ 
+
+    h1 {
+      color: #007BFF;
+    }
+
+ 
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: #FFF;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+ 
+
+    #response {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #CCC;
+      border-radius: 5px;
+      background-color: #FFF;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+ 
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+ 
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+ 
+
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+</style>
+</head>
+<body>
+<h1>Employee Details</h1>
+<div>
+<button onclick="callGetEmployees()">Read (GET) Employees</button>
+<button onclick="callAddEmployee()">Create (POST) Employee</button>
+<button onclick="callUpdateEmployee()">Update (PUT) Employee</button>
+<button onclick="callDeleteEmployee()">Delete (DELETE) Employee</button>
+</div>
+<div id="response"></div>
+
+ 
+
+<script>
+    const baseUrl = 'http://127.0.0.1:5000/api/employees';
+
+ 
+
+    function displayResponse(responseText) {
+        const responseDiv = document.getElementById('response');
+        responseDiv.innerHTML = '';
+
+ 
+
+        if (Array.isArray(responseText)) {
+            if (responseText.length === 0) {
+                responseDiv.innerHTML = 'No employees found.';
+                return;
+            }
+
+ 
+
+            const table = document.createElement('table');
+            table.innerHTML = `
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Date of Joining</th>
+<th>Location</th>
+<th>Project</th>
+</tr>
+            `;
+
+ 
+
+            responseText.forEach((employee) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+<td>${employee.employee_id}</td>
+<td>${employee.employee_name}</td>
+<td>${employee.employee_dateofjoining}</td>
+<td>${employee.employee_location}</td>
+<td>${employee.employee_project}</td>
+                `;
+            });
+
+ 
+
+            responseDiv.appendChild(table);
+        } else {
+            responseDiv.innerHTML = JSON.stringify(responseText, null, 2);
+        }
+    }
+
+ 
+
+    function callGetEmployees() {
+        const xhr = new XMLHttpRequest();
+        const url = baseUrl;
+        xhr.open('GET', url);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                displayResponse(response);
+            } else {
+                console.log(xhr.statusText);
+            }
+        };
+    }
+
+ 
+
+    function callAddEmployee() {
+        const xhr = new XMLHttpRequest();
+        const url = baseUrl;
+
+ 
+
+        const employee_name = prompt('Enter Employee Name:');
+        const employee_dateofjoining = prompt('Enter Date of Joining (YYYY-MM-DD):');
+        const employee_location = prompt('Enter Location:');
+        const employee_project = prompt('Enter Project:');
+
+ 
+
+        if (employee_name === null || employee_dateofjoining === null || employee_location === null || employee_project === null) {
+            return;
+        }
+
+ 
+
+        const data = {
+            employee_name: employee_name,
+            employee_dateofjoining: employee_dateofjoining,
+            employee_location: employee_location,
+            employee_project: employee_project
+        };
+        xhr.open('POST', url);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+        xhr.onload = function() {
+            if (xhr.status === 201) {
+                const response = JSON.parse(xhr.responseText);
+                displayResponse(response);
+            } else {
+                console.log(xhr.statusText);
+            }
+        };
+    }
+
+ 
+
+    function callUpdateEmployee() {
+        const xhr = new XMLHttpRequest();
+        const employeeId = prompt('Enter Employee ID to Update:');
+
+ 
+
+        if (employeeId === null) {
+            return;
+        }
+
+ 
+
+        const url = `${baseUrl}/${employeeId}`;
+
+ 
+
+        const employee_name = prompt('Enter Updated Employee Name:');
+        const employee_dateofjoining = prompt('Enter Updated Date of Joining (YYYY-MM-DD):');
+        const employee_location = prompt('Enter Updated Location:');
+        const employee_project = prompt('Enter Updated Project:');
+
+ 
+
+        if (employee_name === null || employee_dateofjoining === null || employee_location === null || employee_project === null) {
+            return;
+        }
+
+ 
+
+        const data = {
+            employee_name: employee_name,
+            employee_dateofjoining: employee_dateofjoining,
+            employee_location: employee_location,
+            employee_project: employee_project
+        };
+        xhr.open('PUT', url);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                displayResponse(response);
+            } else {
+                console.log(xhr.statusText);
+            }
+        };
+    }
+
+ 
+
+    function callDeleteEmployee() {
+        const xhr = new XMLHttpRequest();
+        const employeeId = prompt('Enter Employee ID to Delete:');
+
+ 
+
+        if (employeeId === null) {
+            return;
+        }
+
+ 
+
+        const url = `${baseUrl}/${employeeId}`;
+        xhr.open('DELETE', url);
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                displayResponse('Employee deleted successfully.');
+            } else {
+                console.log(xhr.statusText);
+            }
+        };
+    }
+</script>
+</body>
+</html>
