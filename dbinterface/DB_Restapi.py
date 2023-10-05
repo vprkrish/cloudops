@@ -1,5 +1,15 @@
 from flask import Flask, request, jsonify
 from database import get_employees, add_employee, get_employee, update_employee, delete_employee
+import json
+
+def load_config():
+    with open('config.json', 'r') as config_file:
+        config_data = json.load(config_file)
+        ip_config = config_data.get('IP_CONFIG', {})
+        ip = ip_config.get('ip')
+        port = ip_config.get('port')
+    return config_data, ip, port
+
 
 app = Flask(__name__)
 
@@ -49,5 +59,5 @@ def delete_single_employee(employee_id):
     return jsonify({"message": "Employee deleted successfully"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=ip, port=port, debug=True)
 
