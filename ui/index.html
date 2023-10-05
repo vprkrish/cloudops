@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Employee Details</title>
+<title>Employee Management System</title>
 <style>
     body {
       font-family: Arial, sans-serif;
@@ -67,19 +67,19 @@
 </style>
 </head>
 <body>
-<h1>Employee Details</h1>
+<h1>Employee Management System</h1>
 <div>
-<button onclick="callGetEmployees()">Read (GET) Employees</button>
-<button onclick="callAddEmployee()">Create (POST) Employee</button>
-<button onclick="callUpdateEmployee()">Update (PUT) Employee</button>
-<button onclick="callDeleteEmployee()">Delete (DELETE) Employee</button>
+<button onclick="callGetEmployees()">List</button>
+<button onclick="callAddEmployee()">Create</button>
+<button onclick="callUpdateEmployee()">Update</button>
+<button onclick="callDeleteEmployee()">Delete</button>
 </div>
 <div id="response"></div>
 
  
 
 <script>
-    const baseUrl = 'http://127.0.0.1:5000/api/employees';
+    const baseUrl = 'http://192.168.1.162:3306/employees';
 
  
 
@@ -110,14 +110,14 @@
 
  
 
-            responseText.forEach((employee) => {
+            responseText.forEach((Employees) => {
                 const row = table.insertRow();
                 row.innerHTML = `
-<td>${employee.employee_id}</td>
-<td>${employee.employee_name}</td>
-<td>${employee.employee_dateofjoining}</td>
-<td>${employee.employee_location}</td>
-<td>${employee.employee_project}</td>
+<td>${Employees.Employee_ID}</td>
+<td>${Employees.Employee_Name}</td>
+<td>${Employees.Employee_DateOfJoining}</td>
+<td>${Employees.Employee_Location}</td>
+<td>${Employees.Employee_Project}</td>
                 `;
             });
 
@@ -169,10 +169,10 @@
  
 
         const data = {
-            employee_name: employee_name,
-            employee_dateofjoining: employee_dateofjoining,
-            employee_location: employee_location,
-            employee_project: employee_project
+            Employee_Name: employee_name,
+            Employee_DateOfJoining: employee_dateofjoining,
+            Employee_Location: employee_location,
+            Employee_Project: employee_project
         };
         xhr.open('POST', url);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -219,10 +219,10 @@
  
 
         const data = {
-            employee_name: employee_name,
-            employee_dateofjoining: employee_dateofjoining,
-            employee_location: employee_location,
-            employee_project: employee_project
+            Employee_Name: employee_name,
+            Employee_DateOfJoining: employee_dateofjoining,
+            Employee_Location: employee_location,
+            Employee_Project: employee_project
         };
         xhr.open('PUT', url);
         xhr.setRequestHeader('Content-Type', 'application/json');
