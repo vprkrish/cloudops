@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Employee Management System</title>
     <style>
@@ -53,7 +54,6 @@
             color: white;
         }
 
-        /* Style for the CRUD forms */
         .crud-form {
             display: none;
             text-align: left;
@@ -83,9 +83,11 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Employee Management System</h1>
     <div>
+        <!-- Buttons to trigger CRUD operations -->
         <button id="createButton">Create</button>
         <button id="fetchButton">Fetch</button>
         <button id="updateButton">Update</button>
@@ -94,7 +96,7 @@
     </div>
     <div id="response"></div>
 
-    <!-- Create Employee Form (hidden by default) -->
+    <!-- Create Employee Form -->
     <div class="crud-form" id="createEmployeeForm">
         <h2>Create Employee</h2>
         <form onsubmit="createEmployee(); return false;">
@@ -114,7 +116,7 @@
         </form>
     </div>
 
-    <!-- Fetch Employee Form (hidden by default) -->
+    <!-- Fetch Employee Form -->
     <div class="crud-form" id="fetchEmployeeForm">
         <h2>Fetch Employee Details by ID</h2>
         <form onsubmit="fetchEmployee(); return false;">
@@ -124,30 +126,37 @@
         </form>
     </div>
 
-    <!-- Update Employee Form (hidden by default) -->
+    <!-- Update Employee Form -->
     <div class="crud-form" id="updateEmployeeForm">
         <h2>Update Employee</h2>
-        <form onsubmit="updateEmployee(); return false;">
+        <form onsubmit="fetchEmployeeForUpdate(); return false;">
             <label for="updateEmployeeId">Employee ID to Update:</label>
             <input type="text" id="updateEmployeeId" name="updateEmployeeId" required><br>
-
-            <label for="updateName">Updated Name:</label>
-            <input type="text" id="updateName" name="updateName" required><br>
-
-            <label for="updateDoj">Updated Date of Joining:</label>
-            <input type="date" id="updateDoj" name="updateDoj" required><br>
-
-            <label for="updateLocation">Updated Location:</label>
-            <input type="text" id="updateLocation" name="updateLocation" required><br>
-
-            <label for="updateProject">Updated Project:</label>
-            <input type="text" id="updateProject" name="updateProject" required><br>
-
             <button type="submit">Submit</button>
         </form>
+
+        <!-- Update Employee Details Form -->
+        <div class="crud-form" id="updateEmployeeDetailsForm">
+            <h2>Update Employee Details</h2>
+            <form onsubmit="updateEmployee(); return false;">
+                <label for="updateName">Updated Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+
+                <label for="updateDoj">Updated Date of Joining:</label>
+                <input type="date" id="updateDoj" name="updateDoj" required><br>
+
+                <label for="updateLocation">Updated Location:</label>
+                <input type="text" id="updateLocation" name="updateLocation" required><br>
+
+                <label for="updateProject">Updated Project:</label>
+                <input type="text" id="updateProject" name="updateProject" required><br>
+
+                <button type="submit">Update Employee</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Delete Employee Form (hidden by default) -->
+    <!-- Delete Employee Form -->
     <div class="crud-form" id="deleteEmployeeForm">
         <h2>Delete Employee</h2>
         <form onsubmit="deleteEmployee(); return false;">
@@ -158,19 +167,19 @@
         </form>
     </div>
 
-    <!-- Read Employees Form (hidden by default) -->
+    <!-- Read Employees Form -->
     <div class="crud-form" id="readEmployeesForm">
-        <table id="employeeTable">
-            <!-- Employee data will be displayed here -->
-        </table>
+        <!-- Table to display employee data -->
+        <table id="employeeTable"></table>
     </div>
 
     <script>
+        // base URL for the API
         const baseUrl = 'http://127.0.0.1:5000/employees';
 
-        // Add event listeners to buttons
+        // Add event listeners for the buttons
         document.getElementById('createButton').addEventListener('click', showCreateEmployeeForm);
-        document.getElementById('fetchButton').addEventListener('click', showfetchEmployeeForm);
+        document.getElementById('fetchButton').addEventListener('click', showFetchEmployeeForm);
         document.getElementById('updateButton').addEventListener('click', showUpdateEmployeeForm);
         document.getElementById('deleteButton').addEventListener('click', showDeleteEmployeeForm);
         document.getElementById('readButton').addEventListener('click', showReadEmployeesForm);
@@ -185,6 +194,7 @@
                     return;
                 }
 
+                // Create a table to display the employee data
                 const table = document.createElement('table');
                 table.innerHTML = `
                     <tr>
@@ -196,6 +206,7 @@
                     </tr>
                 `;
 
+                // table with employee data
                 responseText.forEach((employee) => {
                     const row = table.insertRow();
                     row.innerHTML = `
@@ -206,43 +217,38 @@
                         <td>${employee.Employee_Project}</td>
                     `;
                 });
-
+                
                 responseDiv.appendChild(table);
             } else {
                 responseDiv.innerHTML = JSON.stringify(responseText, null, 2);
             }
         }
 
-        // Function to show the Create Employee form and make a POST request
         function showCreateEmployeeForm() {
             hideAllForms();
             document.getElementById('createEmployeeForm').style.display = 'block';
         }
 
-        // Function to show the Fetch Employee form and make a GET request
-        function showfetchEmployeeForm() {
+        function showFetchEmployeeForm() {
             hideAllForms();
             document.getElementById('fetchEmployeeForm').style.display = 'block';
         }
 
-        // Function to show the Update Employee form and make a PUT request
         function showUpdateEmployeeForm() {
             hideAllForms();
             document.getElementById('updateEmployeeForm').style.display = 'block';
         }
 
-        // Function to show the Delete Employee form and make a DELETE request
         function showDeleteEmployeeForm() {
             hideAllForms();
             document.getElementById('deleteEmployeeForm').style.display = 'block';
         }
 
-        // Function to show the Read Employees form and make a GET request
         function showReadEmployeesForm() {
             hideAllForms();
             document.getElementById('readEmployeesForm').style.display = 'block';
 
-            // Make a GET request to fetch all employees
+            // Fetch and display the list of employees
             const xhr = new XMLHttpRequest();
             xhr.open('GET', baseUrl, true);
             xhr.setRequestHeader('Accept', 'application/json');
@@ -266,10 +272,12 @@
             }
         }
 
+        // Function to create a new employee
         function createEmployee() {
             const xhr = new XMLHttpRequest();
             const url = baseUrl;
 
+           
             const name = document.getElementById('createName').value;
             const doj = document.getElementById('createDoj').value;
             const location = document.getElementById('createLocation').value;
@@ -294,8 +302,7 @@
                 if (xhr.status === 201) {
                     const response = JSON.parse(xhr.responseText);
                     displayResponse('Employee created successfully');
-
-                    // Clear the form fields after successful submission
+                    
                     document.getElementById('createName').value = '';
                     document.getElementById('createDoj').value = '';
                     document.getElementById('createLocation').value = '';
@@ -306,8 +313,37 @@
             };
         }
 
-        function updateEmployee() {
+        // Function to fetch employee details for update
+        function fetchEmployeeForUpdate() {
+            const employeeId = document.getElementById('updateEmployeeId').value;
+            const url = `${baseUrl}/${employeeId}`;
             const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        document.getElementById('updateEmployeeId').disabled = true;
+                        document.getElementById('updateName').value = response.Employee_Name;
+                        const rawDate = response.Employee_DateOfJoining;
+                        const formattedDate = new Date(rawDate).toISOString().split('T')[0];
+                        document.getElementById('updateDoj').value = formattedDate;
+                        document.getElementById('updateLocation').value = response.Employee_Location;
+                        document.getElementById('updateProject').value = response.Employee_Project;
+                        document.getElementById('updateEmployeeDetailsForm').style.display = 'block';
+                    } else if (xhr.status === 404) {
+                        displayResponse('Employee not found.');
+                    } else {
+                        console.log(xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Function to update employee details
+        function updateEmployee() {
             const employeeId = document.getElementById('updateEmployeeId').value;
             const url = `${baseUrl}/${employeeId}`;
 
@@ -316,7 +352,7 @@
             const location = document.getElementById('updateLocation').value;
             const project = document.getElementById('updateProject').value;
 
-            if (!employeeId || !name || !doj || !location || !project) {
+            if (!name || !doj || !location || !project) {
                 alert('Please fill in all fields.');
                 return;
             }
@@ -328,6 +364,7 @@
                 Employee_Project: project
             };
 
+            const xhr = new XMLHttpRequest();
             xhr.open('PUT', url);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
@@ -335,19 +372,21 @@
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     displayResponse('Employee details updated successfully');
-
-                    // Clear the form fields after successful submission
+                    document.getElementById('updateEmployeeId').disabled = false;
                     document.getElementById('updateEmployeeId').value = '';
                     document.getElementById('updateName').value = '';
                     document.getElementById('updateDoj').value = '';
                     document.getElementById('updateLocation').value = '';
                     document.getElementById('updateProject').value = '';
+                  
+                    document.getElementById('updateEmployeeForm').style.display = 'none';
                 } else {
                     console.log(xhr.statusText);
                 }
             };
         }
 
+        // Function to delete an employee
         function deleteEmployee() {
             const xhr = new XMLHttpRequest();
             const employeeId = document.getElementById('deleteEmployeeId').value;
@@ -366,6 +405,7 @@
             };
         }
 
+        // Function to fetch employee details by ID
         function fetchEmployee() {
             const xhr = new XMLHttpRequest();
             const employeeId = document.getElementById('fetchEmployeeId').value;
@@ -390,9 +430,11 @@
             xhr.send();
         }
 
+        // Function to hide the fetch employee form
         function hideFetchEmployeeForm() {
             document.getElementById('fetchEmployeeForm').style.display = 'none';
         }
-    </script>      
+    </script>
 </body>
+
 </html>
