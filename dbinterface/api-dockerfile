@@ -1,0 +1,24 @@
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev
+# Install Flask and any other dependencies
+RUN apt-get update && apt-get install -y mariadb-server default-libmysqlclient-dev
+RUN pip install flask_cors
+RUN pip install requests
+
+# Install Flask and mysql-connector-python
+RUN pip install flask mysql-connector-python
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy your Flask application code into the container
+COPY restapi.py /app/
+COPY config1.json /app/
+# Expose the port your Flask app will run on
+EXPOSE 5000
+
+
+# Run your Flask application
+ENTRYPOINT ["python", "/app/restapi.py"]
