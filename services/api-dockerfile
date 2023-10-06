@@ -14,8 +14,8 @@ RUN pip install flask mysql-connector-python
 WORKDIR /app
 
 # Copy your Flask application code into the container
-COPY dbinterface/restapi.py /app/
-COPY dbinterface/configfile.json /app/
+COPY services/restapi.py /app/
+COPY services/configfile.json /app/
 # Expose the port your Flask app will run on
 EXPOSE 5000
 
