@@ -2,7 +2,7 @@ import unittest
 
 from unittest.mock import patch, MagicMock
 
-from dbinterface.database import (
+from database import (
 
     load_config,
 
