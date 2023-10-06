@@ -10,13 +10,13 @@ RUN pip install flask-cors
 RUN pip install flask mysql-connector-python
 # Set the working directory in the container
 WORKDIR /app
-ENV FLASK_APP DB_Restapi.py
+ENV FLASK_APP dbinterface/DB_Restapi.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV FLASK_RUN_PORT 5001
 # Copy your Flask application code into the container
-COPY DB_Restapi.py /app/
-COPY database.py /app/
-COPY config.json /app/
+COPY dbinterface/DB_Restapi.py /app/
+COPY dbinterface/database.py /app/
+COPY dbinterface/config.json /app/
 # Expose the port your Flask app will run on
 EXPOSE 5001
 
