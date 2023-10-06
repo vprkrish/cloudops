@@ -2,21 +2,13 @@ from flask import Flask, request, jsonify
 import requests
 import json
 
- 
-
 app = Flask(__name__)
-
- 
 
 with open("configfile.json", "r") as config_file:
     config = json.load(config_file)
     employee_api_url = config.get("employee_api_url")
 
- 
-
- 
-
-# Route to fetch all employees from the employee management application
+ # Route to fetch all employees from the employee management application
 @app.route('/employeesinfo', methods=['GET'])
 def fetch_employees():
     response = requests.get(f"{employee_api_url}/employees")
@@ -27,7 +19,6 @@ def fetch_employees():
         return jsonify({"error": f"Error: {response.status_code} - {response.json()}"}), 500
 
  
-
 # Route to fetch a single employee by ID from the employee management application
 @app.route('/employeesinfo/<int:employee_id>', methods=['GET'])
 def fetch_employee(employee_id):
@@ -37,8 +28,6 @@ def fetch_employee(employee_id):
         return jsonify(employee)
     else:
         return jsonify({"error": f"Error: {response.status_code} - {response.json()}"}), 500
-
- 
 
 # Route to add a new employee to the employee management application
 @app.route('/employeesinfo', methods=['POST'])
@@ -61,7 +50,6 @@ def update_employee(employee_id):
         return jsonify({"error": f"Error: {response.status_code} - {response.json()}"}), 500
 
  
-
 # Route to delete an employee by ID in the employee management application
 @app.route('/employeesinfo/<int:employee_id>', methods=['DELETE'])
 def delete_employee(employee_id):
@@ -71,7 +59,5 @@ def delete_employee(employee_id):
     else:
         return jsonify({"error": f"Error: {response.status_code} - {response.json()}"}), 500
 
- 
-
-if __name__ == '__main__':
+ if __name__ == '__main__':
     app.run(debug=True)
