@@ -1,104 +1,258 @@
 <!DOCTYPE html>
 <html>
+
+ 
+
 <head>
 <title>Employee Management System</title>
 <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
 
  
 
-    h1 {
-      color: #007BFF;
-    }
+        h1 {
+            color: #007BFF;
+        }
 
  
 
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
-      background-color: #007BFF;
-      color: #FFF;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #FFF;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
  
 
-    #response {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #CCC;
-      border-radius: 5px;
-      background-color: #FFF;
-      text-align: left;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #CCC;
+            border-radius: 5px;
+            background-color: #FFF;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
  
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
  
 
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
  
 
-    th {
-      background-color: #007BFF;
-      color: white;
-    }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+ 
+
+        /* Style for the CRUD forms */
+        .crud-form {
+            display: none;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+ 
+
+        .crud-form label {
+            display: block;
+            margin-top: 10px;
+        }
+
+ 
+
+        .crud-form input[type="text"],
+        .crud-form input[type="date"] {
+            width: 100%;
+            padding: 5px;
+        }
+
+ 
+
+        .crud-form button[type="button"] {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 </style>
 </head>
+
+ 
+
 <body>
 <h1>Employee Management System</h1>
 <div>
-<button onclick="callGetEmployees()">List</button>
-<button onclick="callAddEmployee()">Create</button>
-<button onclick="callUpdateEmployee()">Update</button>
-<button onclick="callDeleteEmployee()">Delete</button>
+<button id="readButton">List</button>
+<button id="createButton">Create</button>
+<button id="updateButton">Update</button>
+<button id="deleteButton">Delete</button>
+<button id="fetchButton">Fetch</button>
 </div>
 <div id="response"></div>
 
  
 
-<script>
-    const baseUrl = 'http://192.168.1.162:3306/employees';
+    <!-- Read Employees Form (hidden by default) -->
+<div class="crud-form" id="readEmployeesForm">
+<table id="employeeTable">
+<!-- Employee data will be displayed here -->
+</table>
+</div>
 
  
 
-    function displayResponse(responseText) {
-        const responseDiv = document.getElementById('response');
-        responseDiv.innerHTML = '';
+    <!-- Create Employee Form (hidden by default) -->
+<div class="crud-form" id="createEmployeeForm">
+<h2>Create Employee</h2>
+<form onsubmit="createEmployee(); return false;">
+<label for="createName">Name:</label>
+<input type="text" id="createName" name="createName" required><br>
 
  
 
-        if (Array.isArray(responseText)) {
-            if (responseText.length === 0) {
-                responseDiv.innerHTML = 'No employees found.';
-                return;
-            }
+            <label for="createDoj">Date of Joining:</label>
+<input type="date" id="createDoj" name="createDoj" required><br>
 
  
 
-            const table = document.createElement('table');
-            table.innerHTML = `
+            <label for="createLocation">Location:</label>
+<input type="text" id="createLocation" name="createLocation" required><br>
+
+ 
+
+            <label for="createProject">Project:</label>
+<input type="text" id="createProject" name="createProject" required><br>
+
+ 
+
+            <button type="submit">Submit</button>
+</form>
+</div>
+
+ 
+
+    <!-- Update Employee Form (hidden by default) -->
+<div class="crud-form" id="updateEmployeeForm">
+<h2>Update Employee</h2>
+<form onsubmit="updateEmployee(); return false;">
+<label for="updateEmployeeId">Employee ID to Update:</label>
+<input type="text" id="updateEmployeeId" name="updateEmployeeId" required><br>
+
+ 
+
+            <label for="updateName">Updated Name:</label>
+<input type="text" id="updateName" name="updateName" required><br>
+
+ 
+
+            <label for="updateDoj">Updated Date of Joining:</label>
+<input type="date" id="updateDoj" name="updateDoj" required><br>
+
+ 
+
+            <label for="updateLocation">Updated Location:</label>
+<input type="text" id="updateLocation" name="updateLocation" required><br>
+
+ 
+
+            <label for="updateProject">Updated Project:</label>
+<input type="text" id="updateProject" name="updateProject" required><br>
+
+ 
+
+            <button type="submit">Submit</button>
+</form>
+</div>
+
+ 
+
+    <!-- Delete Employee Form (hidden by default) -->
+<div class="crud-form" id="deleteEmployeeForm">
+<h2>Delete Employee</h2>
+<form onsubmit="deleteEmployee(); return false;">
+<label for="deleteEmployeeId">Employee ID to Delete:</label>
+<input type="text" id="deleteEmployeeId" name="deleteEmployeeId" required><br>
+
+ 
+
+            <button type="submit">Submit</button>
+</form>
+</div>
+
+ 
+
+    <!-- Fetch Employee Form -->
+<div class="crud-form" id="fetchEmployeeForm">
+<h2>Fetch Employee Details by ID</h2>
+<form onsubmit="fetchEmployee(); return false;">
+<label for="fetchEmployeeId">Employee ID:</label>
+<input type="text" id="fetchEmployeeId" name="fetchEmployeeId" required><br>
+<button type="submit">Submit</button>
+</form>
+</div>
+
+ 
+
+    <script>
+        const baseUrl = 'http://127.0.0.1:5000/employees';
+
+ 
+
+        // Add event listeners to buttons
+        document.getElementById('readButton').addEventListener('click', showReadEmployeesForm);
+        document.getElementById('createButton').addEventListener('click', showCreateEmployeeForm);
+        document.getElementById('updateButton').addEventListener('click', showUpdateEmployeeForm);
+        document.getElementById('deleteButton').addEventListener('click', showDeleteEmployeeForm);
+        document.getElementById('fetchButton').addEventListener('click', showfetchEmployeeForm);
+
+ 
+
+        function displayResponse(responseText) {
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = '';
+
+ 
+
+            if (Array.isArray(responseText)) {
+                if (responseText.length === 0) {
+                    responseDiv.innerHTML = 'No employees found.';
+                    return;
+                }
+
+ 
+
+                const table = document.createElement('table');
+                table.innerHTML = `
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -106,162 +260,259 @@
 <th>Location</th>
 <th>Project</th>
 </tr>
-            `;
-
- 
-
-            responseText.forEach((Employees) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-<td>${Employees.Employee_ID}</td>
-<td>${Employees.Employee_Name}</td>
-<td>${Employees.Employee_DateOfJoining}</td>
-<td>${Employees.Employee_Location}</td>
-<td>${Employees.Employee_Project}</td>
                 `;
-            });
 
  
 
-            responseDiv.appendChild(table);
-        } else {
-            responseDiv.innerHTML = JSON.stringify(responseText, null, 2);
-        }
-    }
+                responseText.forEach((employee) => {
+                    const row = table.insertRow();
+                    row.innerHTML = `
+<td>${employee.Employee_ID}</td>
+<td>${employee.Employee_Name}</td>
+<td>${employee.Employee_DateOfJoining}</td>
+<td>${employee.Employee_Location}</td>
+<td>${employee.Employee_Project}</td>
+                    `;
+                });
 
  
 
-    function callGetEmployees() {
-        const xhr = new XMLHttpRequest();
-        const url = baseUrl;
-        xhr.open('GET', url);
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.send();
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                displayResponse(response);
+                responseDiv.appendChild(table);
             } else {
-                console.log(xhr.statusText);
+                responseDiv.innerHTML = JSON.stringify(responseText, null, 2);
             }
-        };
-    }
-
- 
-
-    function callAddEmployee() {
-        const xhr = new XMLHttpRequest();
-        const url = baseUrl;
-
- 
-
-        const employee_name = prompt('Enter Employee Name:');
-        const employee_dateofjoining = prompt('Enter Date of Joining (YYYY-MM-DD):');
-        const employee_location = prompt('Enter Location:');
-        const employee_project = prompt('Enter Project:');
-
- 
-
-        if (employee_name === null || employee_dateofjoining === null || employee_location === null || employee_project === null) {
-            return;
         }
 
  
 
-        const data = {
-            Employee_Name: employee_name,
-            Employee_DateOfJoining: employee_dateofjoining,
-            Employee_Location: employee_location,
-            Employee_Project: employee_project
-        };
-        xhr.open('POST', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(data));
-        xhr.onload = function() {
-            if (xhr.status === 201) {
-                const response = JSON.parse(xhr.responseText);
-                displayResponse(response);
-            } else {
-                console.log(xhr.statusText);
-            }
-        };
-    }
+        // Function to show the Read Employees form and make a GET request
+        function showReadEmployeesForm() {
+            hideAllForms();
+            hideEmployeeTable(); // Add this line to hide the table
+            document.getElementById('readEmployeesForm').style.display = 'block';
 
  
 
-    function callUpdateEmployee() {
-        const xhr = new XMLHttpRequest();
-        const employeeId = prompt('Enter Employee ID to Update:');
-
- 
-
-        if (employeeId === null) {
-            return;
+            // Make a GET request to fetch all employees
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', baseUrl, true);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        displayResponse(response);
+                    } else {
+                        console.log(xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
         }
 
  
 
-        const url = `${baseUrl}/${employeeId}`;
-
- 
-
-        const employee_name = prompt('Enter Updated Employee Name:');
-        const employee_dateofjoining = prompt('Enter Updated Date of Joining (YYYY-MM-DD):');
-        const employee_location = prompt('Enter Updated Location:');
-        const employee_project = prompt('Enter Updated Project:');
-
- 
-
-        if (employee_name === null || employee_dateofjoining === null || employee_location === null || employee_project === null) {
-            return;
+        function showCreateEmployeeForm() {
+            hideAllForms();
+            hideEmployeeTable(); // Add this line to hide the table
+            document.getElementById('createEmployeeForm').style.display = 'block';
         }
 
  
 
-        const data = {
-            Employee_Name: employee_name,
-            Employee_DateOfJoining: employee_dateofjoining,
-            Employee_Location: employee_location,
-            Employee_Project: employee_project
-        };
-        xhr.open('PUT', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(data));
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                displayResponse(response);
-            } else {
-                console.log(xhr.statusText);
-            }
-        };
-    }
-
- 
-
-    function callDeleteEmployee() {
-        const xhr = new XMLHttpRequest();
-        const employeeId = prompt('Enter Employee ID to Delete:');
-
- 
-
-        if (employeeId === null) {
-            return;
+        function hideEmployeeTable() {
+            const employeeTable = document.getElementById('employeeTable');
+            employeeTable.innerHTML = ''; // Clear the table
         }
 
  
 
-        const url = `${baseUrl}/${employeeId}`;
-        xhr.open('DELETE', url);
-        xhr.send();
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                displayResponse('Employee deleted successfully.');
-            } else {
-                console.log(xhr.statusText);
+        function showUpdateEmployeeForm() {
+            hideAllForms();
+            document.getElementById('updateEmployeeForm').style.display = 'block';
+        }
+
+ 
+
+        function showDeleteEmployeeForm() {
+            hideAllForms();
+            document.getElementById('deleteEmployeeForm').style.display = 'block';
+        }
+
+        function showfetchEmployeeForm() {
+            hideAllForms();
+            document.getElementById('fetchEmployeeForm').style.display = 'block';
+        }
+
+ 
+
+ 
+
+        function hideAllForms() {
+            const forms = document.getElementsByClassName('crud-form');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].style.display = 'none';
             }
-        };
-    }
+        }
+
+ 
+
+        function createEmployee() {
+            const xhr = new XMLHttpRequest();
+            const url = baseUrl;
+
+ 
+
+            const name = document.getElementById('createName').value;
+            const doj = document.getElementById('createDoj').value;
+            const location = document.getElementById('createLocation').value;
+            const project = document.getElementById('createProject').value;
+
+ 
+
+            if (!name || !doj || !location || !project) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+ 
+
+            const data = {
+                Employee_Name: name,
+                Employee_DateOfJoining: doj,
+                Employee_Location: location,
+                Employee_Project: project
+            };
+
+ 
+
+            xhr.open('POST', url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
+            xhr.onload = function () {
+                if (xhr.status === 201) {
+                    const response = JSON.parse(xhr.responseText);
+                    displayResponse('Employee created successfully');
+
+ 
+
+                    // Clear the form fields after successful submission
+                    document.getElementById('createName').value = '';
+                    document.getElementById('createDoj').value = '';
+                    document.getElementById('createLocation').value = '';
+                    document.getElementById('createProject').value = '';
+                } else {
+                    console.log(xhr.statusText);
+                }
+            };
+        }
+
+ 
+
+        function updateEmployee() {
+            const xhr = new XMLHttpRequest();
+            const employeeId = document.getElementById('updateEmployeeId').value;
+            const url = `${baseUrl}/${employeeId}`;
+
+ 
+
+            const name = document.getElementById('updateName').value;
+            const doj = document.getElementById('updateDoj').value;
+            const location = document.getElementById('updateLocation').value;
+            const project = document.getElementById('updateProject').value;
+
+ 
+
+            if (!employeeId || !name || !doj || !location || !project) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+ 
+
+            const data = {
+                Employee_Name: name,
+                Employee_DateOfJoining: doj,
+                Employee_Location: location,
+                Employee_Project: project
+            };
+
+ 
+
+            xhr.open('PUT', url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    displayResponse('Employee details updated successfully');
+
+ 
+
+                    // Clear the form fields after successful submission
+                    document.getElementById('updateEmployeeId').value = '';
+                    document.getElementById('updateName').value = '';
+                    document.getElementById('updateDoj').value = '';
+                    document.getElementById('updateLocation').value = '';
+                    document.getElementById('updateProject').value = '';
+                } else {
+                    console.log(xhr.statusText);
+                }
+            };
+        }
+
+ 
+
+        function deleteEmployee() {
+            const xhr = new XMLHttpRequest();
+            const employeeId = document.getElementById('deleteEmployeeId').value;
+            const url = `${baseUrl}/${employeeId}`;
+
+ 
+
+            xhr.open('DELETE', url);
+            xhr.send();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    displayResponse('Employee deleted successfully.');
+                    document.getElementById('deleteEmployeeId').value = '';
+                    hideAllForms();
+                } else {
+                    console.log(xhr.statusText);
+                }
+            };
+        }
+
+ 
+
+        function fetchEmployee() {
+            const xhr = new XMLHttpRequest();
+            const employeeId = document.getElementById('fetchEmployeeId').value;
+            const url = `${baseUrl}/${employeeId}`;
+
+ 
+
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        displayResponse(response);
+                        hideFetchEmployeeForm();
+                    } else if (xhr.status === 404) {
+                        displayResponse('Employee not found.');
+                        hideFetchEmployeeForm();
+                    } else {
+                        console.log(xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+        function hideFetchEmployeeForm() {
+            document.getElementById('fetchEmployeeForm').style.display = 'none';
+        }
 </script>
 </body>
 </html>
