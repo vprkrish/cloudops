@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html>
-
- 
-
 <head>
-<title>Employee Management System</title>
-<style>
+    <title>Employee Management System</title>
+    <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -13,13 +10,9 @@
             padding: 20px;
         }
 
- 
-
         h1 {
             color: #007BFF;
         }
-
- 
 
         button {
             padding: 10px 20px;
@@ -31,8 +24,6 @@
             cursor: pointer;
             border-radius: 5px;
         }
-
- 
 
         #response {
             margin-top: 20px;
@@ -46,14 +37,10 @@
             margin-right: auto;
         }
 
- 
-
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
- 
 
         th, td {
             padding: 8px;
@@ -61,14 +48,10 @@
             border-bottom: 1px solid #ddd;
         }
 
- 
-
         th {
             background-color: #007BFF;
             color: white;
         }
-
- 
 
         /* Style for the CRUD forms */
         .crud-form {
@@ -78,22 +61,16 @@
             margin: 0 auto;
         }
 
- 
-
         .crud-form label {
             display: block;
             margin-top: 10px;
         }
-
- 
 
         .crud-form input[type="text"],
         .crud-form input[type="date"] {
             width: 100%;
             padding: 5px;
         }
-
- 
 
         .crud-form button[type="button"] {
             margin-top: 10px;
@@ -104,144 +81,103 @@
             border-radius: 5px;
             cursor: pointer;
         }
-</style>
+    </style>
 </head>
-
- 
-
 <body>
-<h1>Employee Management System</h1>
-<div>
-<button id="readButton">List</button>
-<button id="createButton">Create</button>
-<button id="updateButton">Update</button>
-<button id="deleteButton">Delete</button>
-<button id="fetchButton">Fetch</button>
-</div>
-<div id="response"></div>
-
- 
-
-    <!-- Read Employees Form (hidden by default) -->
-<div class="crud-form" id="readEmployeesForm">
-<table id="employeeTable">
-<!-- Employee data will be displayed here -->
-</table>
-</div>
-
- 
+    <h1>Employee Management System</h1>
+    <div>
+        <button id="createButton">Create</button>
+        <button id="fetchButton">Fetch</button>
+        <button id="updateButton">Update</button>
+        <button id="deleteButton">Delete</button>
+        <button id="readButton">List</button>
+    </div>
+    <div id="response"></div>
 
     <!-- Create Employee Form (hidden by default) -->
-<div class="crud-form" id="createEmployeeForm">
-<h2>Create Employee</h2>
-<form onsubmit="createEmployee(); return false;">
-<label for="createName">Name:</label>
-<input type="text" id="createName" name="createName" required><br>
-
- 
+    <div class="crud-form" id="createEmployeeForm">
+        <h2>Create Employee</h2>
+        <form onsubmit="createEmployee(); return false;">
+            <label for="createName">Name:</label>
+            <input type="text" id="createName" name="createName" required><br>
 
             <label for="createDoj">Date of Joining:</label>
-<input type="date" id="createDoj" name="createDoj" required><br>
-
- 
+            <input type="date" id="createDoj" name="createDoj" required><br>
 
             <label for="createLocation">Location:</label>
-<input type="text" id="createLocation" name="createLocation" required><br>
-
- 
+            <input type="text" id="createLocation" name="createLocation" required><br>
 
             <label for="createProject">Project:</label>
-<input type="text" id="createProject" name="createProject" required><br>
-
- 
+            <input type="text" id="createProject" name="createProject" required><br>
 
             <button type="submit">Submit</button>
-</form>
-</div>
+        </form>
+    </div>
 
- 
+    <!-- Fetch Employee Form (hidden by default) -->
+    <div class="crud-form" id="fetchEmployeeForm">
+        <h2>Fetch Employee Details by ID</h2>
+        <form onsubmit="fetchEmployee(); return false;">
+            <label for="fetchEmployeeId">Employee ID:</label>
+            <input type="text" id="fetchEmployeeId" name="fetchEmployeeId" required><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
     <!-- Update Employee Form (hidden by default) -->
-<div class="crud-form" id="updateEmployeeForm">
-<h2>Update Employee</h2>
-<form onsubmit="updateEmployee(); return false;">
-<label for="updateEmployeeId">Employee ID to Update:</label>
-<input type="text" id="updateEmployeeId" name="updateEmployeeId" required><br>
-
- 
+    <div class="crud-form" id="updateEmployeeForm">
+        <h2>Update Employee</h2>
+        <form onsubmit="updateEmployee(); return false;">
+            <label for="updateEmployeeId">Employee ID to Update:</label>
+            <input type="text" id="updateEmployeeId" name="updateEmployeeId" required><br>
 
             <label for="updateName">Updated Name:</label>
-<input type="text" id="updateName" name="updateName" required><br>
-
- 
+            <input type="text" id="updateName" name="updateName" required><br>
 
             <label for="updateDoj">Updated Date of Joining:</label>
-<input type="date" id="updateDoj" name="updateDoj" required><br>
-
- 
+            <input type="date" id="updateDoj" name="updateDoj" required><br>
 
             <label for="updateLocation">Updated Location:</label>
-<input type="text" id="updateLocation" name="updateLocation" required><br>
-
- 
+            <input type="text" id="updateLocation" name="updateLocation" required><br>
 
             <label for="updateProject">Updated Project:</label>
-<input type="text" id="updateProject" name="updateProject" required><br>
-
- 
+            <input type="text" id="updateProject" name="updateProject" required><br>
 
             <button type="submit">Submit</button>
-</form>
-</div>
-
- 
+        </form>
+    </div>
 
     <!-- Delete Employee Form (hidden by default) -->
-<div class="crud-form" id="deleteEmployeeForm">
-<h2>Delete Employee</h2>
-<form onsubmit="deleteEmployee(); return false;">
-<label for="deleteEmployeeId">Employee ID to Delete:</label>
-<input type="text" id="deleteEmployeeId" name="deleteEmployeeId" required><br>
-
- 
+    <div class="crud-form" id="deleteEmployeeForm">
+        <h2>Delete Employee</h2>
+        <form onsubmit="deleteEmployee(); return false;">
+            <label for="deleteEmployeeId">Employee ID to Delete:</label>
+            <input type="text" id="deleteEmployeeId" name="deleteEmployeeId" required><br>
 
             <button type="submit">Submit</button>
-</form>
-</div>
+        </form>
+    </div>
 
- 
-
-    <!-- Fetch Employee Form -->
-<div class="crud-form" id="fetchEmployeeForm">
-<h2>Fetch Employee Details by ID</h2>
-<form onsubmit="fetchEmployee(); return false;">
-<label for="fetchEmployeeId">Employee ID:</label>
-<input type="text" id="fetchEmployeeId" name="fetchEmployeeId" required><br>
-<button type="submit">Submit</button>
-</form>
-</div>
-
- 
+    <!-- Read Employees Form (hidden by default) -->
+    <div class="crud-form" id="readEmployeesForm">
+        <table id="employeeTable">
+            <!-- Employee data will be displayed here -->
+        </table>
+    </div>
 
     <script>
         const baseUrl = 'http://127.0.0.1:5000/employees';
 
- 
-
         // Add event listeners to buttons
-        document.getElementById('readButton').addEventListener('click', showReadEmployeesForm);
         document.getElementById('createButton').addEventListener('click', showCreateEmployeeForm);
+        document.getElementById('fetchButton').addEventListener('click', showfetchEmployeeForm);
         document.getElementById('updateButton').addEventListener('click', showUpdateEmployeeForm);
         document.getElementById('deleteButton').addEventListener('click', showDeleteEmployeeForm);
-        document.getElementById('fetchButton').addEventListener('click', showfetchEmployeeForm);
-
- 
+        document.getElementById('readButton').addEventListener('click', showReadEmployeesForm);
 
         function displayResponse(responseText) {
             const responseDiv = document.getElementById('response');
             responseDiv.innerHTML = '';
-
- 
 
             if (Array.isArray(responseText)) {
                 if (responseText.length === 0) {
@@ -249,33 +185,27 @@
                     return;
                 }
 
- 
-
                 const table = document.createElement('table');
                 table.innerHTML = `
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Date of Joining</th>
-<th>Location</th>
-<th>Project</th>
-</tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date of Joining</th>
+                        <th>Location</th>
+                        <th>Project</th>
+                    </tr>
                 `;
-
- 
 
                 responseText.forEach((employee) => {
                     const row = table.insertRow();
                     row.innerHTML = `
-<td>${employee.Employee_ID}</td>
-<td>${employee.Employee_Name}</td>
-<td>${employee.Employee_DateOfJoining}</td>
-<td>${employee.Employee_Location}</td>
-<td>${employee.Employee_Project}</td>
+                        <td>${employee.Employee_ID}</td>
+                        <td>${employee.Employee_Name}</td>
+                        <td>${employee.Employee_DateOfJoining}</td>
+                        <td>${employee.Employee_Location}</td>
+                        <td>${employee.Employee_Project}</td>
                     `;
                 });
-
- 
 
                 responseDiv.appendChild(table);
             } else {
@@ -283,15 +213,34 @@
             }
         }
 
- 
+        // Function to show the Create Employee form and make a POST request
+        function showCreateEmployeeForm() {
+            hideAllForms();
+            document.getElementById('createEmployeeForm').style.display = 'block';
+        }
+
+        // Function to show the Fetch Employee form and make a GET request
+        function showfetchEmployeeForm() {
+            hideAllForms();
+            document.getElementById('fetchEmployeeForm').style.display = 'block';
+        }
+
+        // Function to show the Update Employee form and make a PUT request
+        function showUpdateEmployeeForm() {
+            hideAllForms();
+            document.getElementById('updateEmployeeForm').style.display = 'block';
+        }
+
+        // Function to show the Delete Employee form and make a DELETE request
+        function showDeleteEmployeeForm() {
+            hideAllForms();
+            document.getElementById('deleteEmployeeForm').style.display = 'block';
+        }
 
         // Function to show the Read Employees form and make a GET request
         function showReadEmployeesForm() {
             hideAllForms();
-            hideEmployeeTable(); // Add this line to hide the table
             document.getElementById('readEmployeesForm').style.display = 'block';
-
- 
 
             // Make a GET request to fetch all employees
             const xhr = new XMLHttpRequest();
@@ -310,44 +259,6 @@
             xhr.send();
         }
 
- 
-
-        function showCreateEmployeeForm() {
-            hideAllForms();
-            hideEmployeeTable(); // Add this line to hide the table
-            document.getElementById('createEmployeeForm').style.display = 'block';
-        }
-
- 
-
-        function hideEmployeeTable() {
-            const employeeTable = document.getElementById('employeeTable');
-            employeeTable.innerHTML = ''; // Clear the table
-        }
-
- 
-
-        function showUpdateEmployeeForm() {
-            hideAllForms();
-            document.getElementById('updateEmployeeForm').style.display = 'block';
-        }
-
- 
-
-        function showDeleteEmployeeForm() {
-            hideAllForms();
-            document.getElementById('deleteEmployeeForm').style.display = 'block';
-        }
-
-        function showfetchEmployeeForm() {
-            hideAllForms();
-            document.getElementById('fetchEmployeeForm').style.display = 'block';
-        }
-
- 
-
- 
-
         function hideAllForms() {
             const forms = document.getElementsByClassName('crud-form');
             for (let i = 0; i < forms.length; i++) {
@@ -355,27 +266,19 @@
             }
         }
 
- 
-
         function createEmployee() {
             const xhr = new XMLHttpRequest();
             const url = baseUrl;
-
- 
 
             const name = document.getElementById('createName').value;
             const doj = document.getElementById('createDoj').value;
             const location = document.getElementById('createLocation').value;
             const project = document.getElementById('createProject').value;
 
- 
-
             if (!name || !doj || !location || !project) {
                 alert('Please fill in all fields.');
                 return;
             }
-
- 
 
             const data = {
                 Employee_Name: name,
@@ -384,8 +287,6 @@
                 Employee_Project: project
             };
 
- 
-
             xhr.open('POST', url);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
@@ -393,8 +294,6 @@
                 if (xhr.status === 201) {
                     const response = JSON.parse(xhr.responseText);
                     displayResponse('Employee created successfully');
-
- 
 
                     // Clear the form fields after successful submission
                     document.getElementById('createName').value = '';
@@ -407,28 +306,20 @@
             };
         }
 
- 
-
         function updateEmployee() {
             const xhr = new XMLHttpRequest();
             const employeeId = document.getElementById('updateEmployeeId').value;
             const url = `${baseUrl}/${employeeId}`;
-
- 
 
             const name = document.getElementById('updateName').value;
             const doj = document.getElementById('updateDoj').value;
             const location = document.getElementById('updateLocation').value;
             const project = document.getElementById('updateProject').value;
 
- 
-
             if (!employeeId || !name || !doj || !location || !project) {
                 alert('Please fill in all fields.');
                 return;
             }
-
- 
 
             const data = {
                 Employee_Name: name,
@@ -437,8 +328,6 @@
                 Employee_Project: project
             };
 
- 
-
             xhr.open('PUT', url);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
@@ -446,8 +335,6 @@
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     displayResponse('Employee details updated successfully');
-
- 
 
                     // Clear the form fields after successful submission
                     document.getElementById('updateEmployeeId').value = '';
@@ -461,14 +348,10 @@
             };
         }
 
- 
-
         function deleteEmployee() {
             const xhr = new XMLHttpRequest();
             const employeeId = document.getElementById('deleteEmployeeId').value;
             const url = `${baseUrl}/${employeeId}`;
-
- 
 
             xhr.open('DELETE', url);
             xhr.send();
@@ -483,14 +366,10 @@
             };
         }
 
- 
-
         function fetchEmployee() {
             const xhr = new XMLHttpRequest();
             const employeeId = document.getElementById('fetchEmployeeId').value;
             const url = `${baseUrl}/${employeeId}`;
-
- 
 
             xhr.open('GET', url, true);
             xhr.setRequestHeader('Accept', 'application/json');
@@ -498,7 +377,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
-                        displayResponse(response);
+                        displayResponse([response]);
                         hideFetchEmployeeForm();
                     } else if (xhr.status === 404) {
                         displayResponse('Employee not found.');
@@ -510,9 +389,10 @@
             };
             xhr.send();
         }
+
         function hideFetchEmployeeForm() {
             document.getElementById('fetchEmployeeForm').style.display = 'none';
         }
-</script>
+    </script>      
 </body>
 </html>
