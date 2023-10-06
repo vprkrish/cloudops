@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import requests
 import json
-
 app = Flask(__name__)
 
 with open("configfile.json", "r") as config_file:
