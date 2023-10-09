@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from database import get_employees, add_employee, get_employee, update_employee, delete_employee
 import json
-
+from flask_cors import CORS
 def load_config():
     with open('config.json', 'r') as config_file:
         config_data = json.load(config_file)
