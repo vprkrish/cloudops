@@ -12,6 +12,9 @@ def load_config():
 
 
 app = Flask(__name__)
+# Load config and get IP and port
+config_data, ip, port = load_config()
+
 
 # Get all employees
 @app.route('/employees', methods=['GET'])
