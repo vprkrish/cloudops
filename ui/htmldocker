@@ -8,12 +8,13 @@ RUN pip install flask flask_cors
 WORKDIR /app
 
 # Define environment variables
-ENV FLASK_APP=ui/html_ui.py
+ENV FLASK_APP=html_ui.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5002
+
 # Copy your Flask application code and templates into the container
-COPY ui/html_ui.py /app/
-COPY ui/index.html /app/templates/index.html
+COPY html_ui.py /app/
+COPY /templates/index.html /app/templates/index.html
 
 # Expose the port your Flask app will run on
 EXPOSE 5002
