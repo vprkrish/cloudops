@@ -175,7 +175,7 @@
 
     <script>
         // base URL for the API
-        const baseUrl = 'http://0.0.0.0:5000/employeesinfo';
+        const baseUrl = 'http://0.0.0.0:5001/employeesinfo';
 
         // Add event listeners for the buttons
         document.getElementById('createButton').addEventListener('click', showCreateEmployeeForm);
@@ -299,7 +299,7 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
             xhr.onload = function () {
-                if (xhr.status === 201) {
+                if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     displayResponse('Employee created successfully');
                     
@@ -307,6 +307,7 @@
                     document.getElementById('createDoj').value = '';
                     document.getElementById('createLocation').value = '';
                     document.getElementById('createProject').value = '';
+                    document.getElementById('createEmployeeForm').style.display = 'none';
                 } else {
                     console.log(xhr.statusText);
                 }
