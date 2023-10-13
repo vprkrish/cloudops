@@ -1,7 +1,21 @@
 from flask import Flask, request, jsonify
 from database import get_employees, add_employee, get_employee, update_employee, delete_employee
+import json
+from flask_cors import CORS
+def load_config():
+    with open('config.json', 'r') as config_file:
+        config_data = json.load(config_file)
+        ip_config = config_data.get('IP_CONFIG', {})
+        ip = ip_config.get('ip')
+        port = ip_config.get('port')
+    return config_data, ip, port
+
 
 app = Flask(__name__)
+# Load config and get IP and port
+config_data, ip, port = load_config()
+CORS(app, origins='*')
+
 
 # Get all employees
 @app.route('/employees', methods=['GET'])
@@ -49,5 +63,5 @@ def delete_single_employee(employee_id):
     return jsonify({"message": "Employee deleted successfully"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=ip, port=port, debug=True)
 

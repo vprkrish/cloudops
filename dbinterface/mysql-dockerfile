@@ -1,0 +1,13 @@
+FROM mysql:latest
+
+# Set the MySQL root password (change to your desired password)
+ENV MYSQL_ROOT_PASSWORD=deeksha
+
+# Set the MySQL database and user (change to your desired values)
+ENV MYSQL_DATABASE=employee
+ENV MYSQL_USER=deeksha
+ENV MYSQL_PASSWORD=deeksha
+COPY init-database.sql /docker-entrypoint-initdb.d/
+# Expose the MySQL port
+EXPOSE 3306
+CMD ["mysqld"]
