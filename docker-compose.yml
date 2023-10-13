@@ -34,6 +34,9 @@ services:
       
   db:
     image: mysql:5.7
+    build:
+      context: ./dbinterface
+      dockerfile: mysql-dockerfile
     container_name: "db_container"
     ports:
       - "32000:3306"
