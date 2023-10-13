@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 import requests
 import json
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app,origins='*')
 with open("configfile.json", "r") as config_file:
     config = json.load(config_file)
     employee_api_url = config.get("employee_api_url")
