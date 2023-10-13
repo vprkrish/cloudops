@@ -2,17 +2,12 @@
 FROM python:3.8-slim
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y default-libmysqlclient-dev
-# Install Flask and any other dependencies
-RUN apt-get update && apt-get install -y mariadb-server default-libmysqlclient-dev
 RUN pip install flask_cors
 RUN pip install requests
 ENV FLASK_APP restapi.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV FLASK_RUN_PORT 5001
 
-# Install Flask and mysql-connector-python
-RUN pip install flask mysql-connector-python
 # Set the working directory in the container
 WORKDIR /app
 
