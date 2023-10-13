@@ -2,7 +2,7 @@
     "DATABASE_CONFIG": {
         "user": "root",
         "password": "deeksha",
-        "host": "db-1",
+        "host": "db",
         "port": "3306",
         "database": "employee"
     },
