@@ -4,7 +4,7 @@ FROM python:3.8-slim
 # Install necessary packages
 RUN pip install flask_cors
 RUN pip install requests
-ENV FLASK_APP services/restapi.py
+ENV FLASK_APP restapi.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV FLASK_RUN_PORT 5001
 
@@ -12,8 +12,8 @@ ENV FLASK_RUN_PORT 5001
 WORKDIR /app
 
 # Copy your Flask application code into the container
-COPY services/restapi.py /app
-COPY services/configfile.json /app
+COPY restapi.py /app
+COPY configfile.json /app
 # Expose the port your Flask app will run on
 EXPOSE 5001
 
