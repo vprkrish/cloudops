@@ -13,7 +13,7 @@ ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5002
 
 # Copy your Flask application code and templates into the container
-COPY html_ui.py /app/
+COPY html_ui.py /app
 COPY /templates/index.html /app/templates/index.html
 
 # Expose the port your Flask app will run on
